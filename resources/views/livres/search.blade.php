@@ -37,7 +37,6 @@
                     </div>
                 </div>
             </form>
-
         </div>
 
         <!-- Résultats -->
@@ -55,11 +54,22 @@
                                     <h6 class="card-subtitle mb-2 text-muted">{{ $livre->auteur }}</h6>
                                     <p class="card-text mb-1"><strong>Catégorie:</strong> {{ $livre->categorie }}</p>
                                     <p class="card-text mb-1"><strong>Année:</strong> {{ $livre->annee_publication }}</p>
-                                    <p class="card-text mb-1"><strong>Prix:</strong> {{ $livre->prix }}€</p>
+                                    <p class="card-text mb-1 text-success fw-bold"><strong>Prix:</strong> {{ $livre->prix }}€</p>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
                                     <a href="{{ route('livres.show', $livre) }}" class="btn btn-sm btn-info">👁 Voir</a>
-                                    <a href="{{ route('livres.edit', $livre) }}" class="btn btn-sm btn-warning">✏️ Éditer</a>
+
+                                    @auth
+                                        {{-- Ajouter au panier si l'utilisateur est connecté --}}
+                                        <form action="{{ route('panier.ajouter', $livre->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success">🛒 Ajouter</button>
+                                        </form>
+                                    @endauth
+
+                                    @can('isAdmin') {{-- Seulement admin peut éditer --}}
+                                        <a href="{{ route('livres.edit', $livre) }}" class="btn btn-sm btn-warning">✏️ Éditer</a>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
