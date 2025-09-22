@@ -19,4 +19,12 @@ class Livre extends Model
         'resume',
         'prix',
     ];
+
+    public function achats()
+{
+    return $this->belongsToMany(\App\Models\Achat::class, 'achat_livre', 'livre_id', 'achat_id')
+                ->withPivot('quantite', 'prix_unitaire')
+                ->withTimestamps();
+}
+
 }

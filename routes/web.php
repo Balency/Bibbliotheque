@@ -8,6 +8,8 @@ use App\Http\Controllers\PanierController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\HistoriqueController;
+use App\Http\Controllers\Admin\DashboardController;
 
 // Page accueil
 Route::get('/', fn() => redirect()->route('livres.index'));
@@ -39,9 +41,8 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 // Routes protégées (auth)
 // ----------------------
 Route::middleware('auth')->group(function () {
-
-    // Dashboard
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    
+    
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -69,6 +70,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::delete('/livres/{livre}', [LivreController::class, 'destroy'])->name('livres.destroy');
 
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 });
 
 // Panier
@@ -93,3 +96,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
     Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 });
+
+Route::middleware('auth')->get('/historique', [HistoriqueController::class, 'index'])->name('achats.historique');

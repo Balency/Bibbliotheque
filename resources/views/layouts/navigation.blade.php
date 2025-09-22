@@ -5,7 +5,7 @@
             <div class="flex items-center space-x-8">
                 @auth
                     @if(Auth::user()->isAdmin())
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('admin.dashboard') }}"
                             class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                             Dashboard
                         </a>
@@ -32,6 +32,10 @@
                         <a href="{{ route('panier.index') }}"
                             class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                             Mon Panier
+                        </a>
+                         <a href="{{ route('achats.historique') }}"
+                            class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                            Historique d'achat
                         </a>
                     @endif
                 @endauth
