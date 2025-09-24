@@ -60,16 +60,20 @@
                                     <a href="{{ route('livres.show', $livre) }}" class="btn btn-sm btn-info">👁 Voir</a>
 
                                     @auth
-                                        {{-- Ajouter au panier si l'utilisateur est connecté --}}
-                                        <form action="{{ route('panier.ajouter', $livre->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-success">🛒 Ajouter</button>
-                                        </form>
+
+                                        @if(!auth()->user()->isAdmin())
+                                            <form action="{{ route('panier.ajouter', $livre->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-success">🛒 Ajouter</button>
+                                            </form>
+                                        @endif
+
+                                        @if(auth()->user()->isAdmin())
+                                            <a href="{{ route('livres.edit', $livre) }}" class="btn btn-sm btn-warning">✏️ Éditer</a>
+                                        @endif
                                     @endauth
 
-                                    @can('isAdmin') {{-- Seulement admin peut éditer --}}
-                                        <a href="{{ route('livres.edit', $livre) }}" class="btn btn-sm btn-warning">✏️ Éditer</a>
-                                    @endcan
+
                                 </div>
                             </div>
                         </div>

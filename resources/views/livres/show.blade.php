@@ -33,9 +33,11 @@
         <a href="{{ route('livres.index') }}" class="btn btn-secondary">↩ Retour</a>
 
         {{-- Bouton "Ajouter au panier" --}}
+        @if(auth()->check() && !auth()->user()->isAdmin())
         <form action="{{ route('panier.ajouter', $livre->id) }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-success">🛒 Ajouter au panier</button>
         </form>
+        @endif
     </div>
 @endsection
