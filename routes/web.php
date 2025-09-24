@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Auth\PasswordController;
 
 // Page accueil
 Route::get('/', fn() => redirect()->route('livres.index'));
@@ -18,6 +19,7 @@ Route::get('/', fn() => redirect()->route('livres.index'));
 // Routes publiques
 // ----------------------
 Route::get('/livres', [LivreController::class, 'index'])->name('livres.index');
+    Route::get('/livres/create', [LivreController::class, 'create'])->name('livres.create');
 Route::get('/livres/{livre}', [LivreController::class, 'show'])->name('livres.show');
 Route::get('/nouveautes', [LivreController::class, 'nouveautes'])->name('livres.nouveautes');
 Route::get('/search', [LivreController::class, 'searchForm'])->name('livres.search.form');
@@ -41,8 +43,8 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 // Routes protégées (auth)
 // ----------------------
 Route::middleware('auth')->group(function () {
-    
-    
+
+
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -59,11 +61,12 @@ Route::middleware('auth')->group(function () {
         ->name('verification.send');
 });
 
+
+
 // ----------------------
 // Routes admin
 // ----------------------
 Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/livres/create', [LivreController::class, 'create'])->name('livres.create');
     Route::post('/livres', [LivreController::class, 'store'])->name('livres.store');
     Route::get('/livres/{livre}/edit', [LivreController::class, 'edit'])->name('livres.edit');
     Route::put('/livres/{livre}', [LivreController::class, 'update'])->name('livres.update');
@@ -87,14 +90,19 @@ Route::middleware('auth')->group(function () {
     // Routes PayPal
     Route::post('/paypal/checkout', [PaymentController::class, 'checkout'])->name('paypal.checkout');
     Route::post('/paypal/capture', [PaymentController::class, 'capture'])->name('paypal.capture');
-    
+
     // Routes Stripe
     Route::post('/stripe/create-payment-intent', [PaymentController::class, 'createStripePaymentIntent'])->name('stripe.create-payment-intent');
     Route::post('/stripe/confirm-payment', [PaymentController::class, 'confirmStripePayment'])->name('stripe.confirm-payment');
-    
+
     // Routes de retour
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
     Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 });
 
 Route::middleware('auth')->get('/historique', [HistoriqueController::class, 'index'])->name('achats.historique');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/password/change', [PasswordController::class, 'edit'])->name('password.edit');
+    Route::post('/password/change', [PasswordController::class, 'update'])->name('password.update');
+});

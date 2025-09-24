@@ -33,17 +33,25 @@
                             class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                             Mon Panier
                         </a>
-                         <a href="{{ route('achats.historique') }}"
+                        <a href="{{ route('achats.historique') }}"
                             class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                             Historique d'achat
                         </a>
+
+                        <a href="{{ route('messages.create') }}"
+                            class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                            Contact
+                        </a>
                     @endif
+                    @if(Auth::user()->isAdmin())
+                        <a href="{{ route('messages.index') }}"
+                            class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                            Messages
+                        </a>
+                    @endif
+
                 @endauth
 
-                <a href="{{ route('messages.create') }}"
-                    class="font-semibold text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                    Contact
-                </a>
             </div>
 
             <!-- Dropdown utilisateur -->
